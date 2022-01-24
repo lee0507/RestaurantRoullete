@@ -85,3 +85,13 @@ C:\Users\jmyang\source\repos\Swilago\bin\Debug\net6.0\ClientApp\tsconfig.app.jso
 C:\Users\jmyang\source\repos\Swilago\bin\Debug\net6.0\ClientApp\tsconfig.json
 C:\Users\jmyang\source\repos\Swilago\bin\Debug\net6.0\ClientApp\tsconfig.spec.json
 C:\Users\jmyang\source\repos\Swilago\bin\Debug\net6.0\ClientApp\tslint.json
+C:\Source\Swilago\obj\Debug\net6.0\Swilago.csproj.AssemblyReference.cache
+C:\Source\Swilago\obj\Debug\net6.0\Swilago.GeneratedMSBuildEditorConfig.editorconfig
+C:\Source\Swilago\obj\Debug\net6.0\Swilago.AssemblyInfoInputs.cache
+C:\Source\Swilago\obj\Debug\net6.0\Swilago.AssemblyInfo.cs
+C:\Source\Swilago\obj\Debug\net6.0\Swilago.csproj.CoreCompileInputs.cache
+C:\Source\Swilago\obj\Debug\net6.0\Swilago.MvcApplicationPartsAssemblyInfo.cs
+C:\Source\Swilago\obj\Debug\net6.0\Swilago.MvcApplicationPartsAssemblyInfo.cache
+C:\Source\Swilago\obj\Debug\net6.0\Swilago.dll
+C:\Source\Swilago\obj\Debug\net6.0\ref\Swilago.dll
+C:\Source\Swilago\obj\Debug\net6.0\Swilago.pdb
