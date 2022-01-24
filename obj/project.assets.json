@@ -8552,11 +8552,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\jmyang\\source\\repos\\Swilago\\Swilago.csproj",
+      "projectUniqueName": "C:\\Users\\jmyang\\source\\GitRepos\\Swilago\\Swilago.csproj",
       "projectName": "Swilago",
-      "projectPath": "C:\\Users\\jmyang\\source\\repos\\Swilago\\Swilago.csproj",
+      "projectPath": "C:\\Users\\jmyang\\source\\GitRepos\\Swilago\\Swilago.csproj",
       "packagesPath": "C:\\Users\\jmyang\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\jmyang\\source\\repos\\Swilago\\obj\\",
+      "outputPath": "C:\\Users\\jmyang\\source\\GitRepos\\Swilago\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\jmyang\\AppData\\Roaming\\NuGet\\NuGet.Config",

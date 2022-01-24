@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "tYO4zvcJH1yGTFbu/K1sD9y6QxrDebKXQMKFuhG0u7+5XVF/tkhaoLlon4xj1LnOLvPpZ56q5c5wfGw1YQWt8A==",
+  "dgSpecHash": "4B7qGneKze6qx1W1AqLO6nNaXjRiLn/QjQj586TDgiTka/VVDbX1AdxTNYhXGIqioJgp6C/svDr7xBYVB8/mqA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\jmyang\\source\\repos\\Swilago\\Swilago.csproj",
+  "projectFilePath": "C:\\Users\\jmyang\\source\\GitRepos\\Swilago\\Swilago.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jmyang\\.nuget\\packages\\azure.core\\1.20.0\\azure.core.1.20.0.nupkg.sha512",
     "C:\\Users\\jmyang\\.nuget\\packages\\azure.identity\\1.5.0\\azure.identity.1.5.0.nupkg.sha512",
