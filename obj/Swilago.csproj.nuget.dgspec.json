@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "C:\\Users\\jmyang\\source\\GitRepos\\Swilago\\Swilago.csproj": {}
   },
   "projects": {
@@ -12,9 +13,22 @@
         "projectPath": "C:\\Users\\jmyang\\source\\GitRepos\\Swilago\\Swilago.csproj",
         "packagesPath": "C:\\Users\\jmyang\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\jmyang\\source\\GitRepos\\Swilago\\obj\\",
+=======
+    "C:\\Source\\Swilago\\Swilago.csproj": {}
+  },
+  "projects": {
+    "C:\\Source\\Swilago\\Swilago.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Source\\Swilago\\Swilago.csproj",
+        "projectName": "Swilago",
+        "projectPath": "C:\\Source\\Swilago\\Swilago.csproj",
+        "packagesPath": "C:\\Users\\leedh\\.nuget\\packages\\",
+        "outputPath": "C:\\Source\\Swilago\\obj\\",
+>>>>>>> origin/develop
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\jmyang\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\leedh\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -103,7 +117,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }
