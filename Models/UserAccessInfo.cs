@@ -2,14 +2,14 @@
 {
     public class UserAccessInfo
     {
-        public string Error { get; set; }
+        public string AccessToken { get; set; }
 
-        public string EventType { get; set; }
+        public string UserName { get; set; }
 
-        public string InteractionType { get; set; }
+        public string Email { get; set; }
 
-        public List<asd> PayLoad { get; set; }
+        public string LocalAccountId { get; set; }
 
-        public DateTime Timestamp { get; set; }
+        public string TenantId { get; set; }
     }
 }
