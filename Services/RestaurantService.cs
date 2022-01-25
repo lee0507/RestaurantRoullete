@@ -25,44 +25,51 @@ namespace Swilago.Services
         }
 
         // 식당 전체 조회
-        public Payload GetRestaurantList()
+        public IActionResult GetRestaurantList()
         {
-            Payload payload = new();
+            // Statistics 테이블에서 가장 마지막 StatisticsId에 있는 Email 가져오기. 가져온 Email로 접속자 확인 가능
+            var email = _context.Statistics.AsNoTracking().OrderByDescending(i => i.Email).FirstOrDefault();
 
-            try
+            string rouletteList = "";
+            int restaurantNamesCount = 0;
+            if (email == null)
             {
-                Restaurants restaurants = new();
-                using (SqlConnection dbConnection = new(_config["SqlServerConnection"]))
+                // 첫 접속자면 저장된 Email이 없기에 기본 T_Restaurant로 업데이트.
+                rouletteList = "솔낭구,진씨화로,봉된장,중국집,소머리국밥,";
+                restaurantNamesCount = 5;
+            }
+            else
+            {
+                // 조건 추가하여 검색 => 동일한 Email이면서 RouletteList가 Empty("")가 아닌 가장 마지막 StatisticsId의 RouletteList 가져오기.
+                // '솔낭구,진씨화로,봉된장,중국집,소머리국밥,'
+                rouletteList = _context.Statistics.AsNoTracking().Where(i => i.Email.Equals(email) && i.RouletteList != "").OrderByDescending(i => i.RouletteList).FirstOrDefault().ToString();
+
+                // 가져온 RouletteList는 String이기에 Split해서 RestaurantList 클래스 최신화.
+                string[] restaurantNames = rouletteList.ToString().Split(',');
+                restaurantNamesCount = restaurantNames.Count() - 1;
+            }
+
+            // RestaurantList클래스를 Procedure에 넘겨서 T_Restaurant 최신화 업데이트.
+            using (SqlConnection dbConnection = new(_config["SqlServerConnection"]))
+            {
+                dbConnection.Open();
+                using (SqlCommand command = dbConnection.CreateCommand())
                 {
-                    dbConnection.Open();
-                    using (SqlCommand command = dbConnection.CreateCommand())
-                    {
-                        command.CommandTimeout = 0;
-                        command.CommandText = @"SELECT * FROM dbo.T_Restaurant";
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                restaurants.RestaurantList.Add(
-                                    new Restaurant()
-                                    {
-                                        id = (int)reader["RestaurantId"],
-                                        text = (string)reader["RestaurantName"]
-                                    }
-                                );
-                            }
-                        }
-                    }
+                    command.CommandTimeout = 0;
+                    command.CommandText = "EXEC dbo.P_SetRouletteList @RouletteResultListCount, @RestaurantList";
+
+                    // rouletteResultListCount 값을 프로시져로 전달 코드
+                    SqlParameter paramRouletteResultListCount = new("@RouletteResultListCount", restaurantNamesCount);
+                    SqlParameter paramRestaurantListString = new("@RestaurantList", rouletteList);
+
+                    command.Parameters.Add(paramRouletteResultListCount);
+                    command.Parameters.Add(paramRestaurantListString);
+
+                    command.ExecuteNonQuery();
                 }
-                
-                payload.Message = JsonConvert.SerializeObject(restaurants, Formatting.Indented);
-            }
-            catch (Exception ex)
-            {
-                SetErrorMessages(ref payload, ex);
             }
 
-            return payload;
+            return NoContent();
         }
 
         // 식당 하나 조회
@@ -97,76 +104,54 @@ namespace Swilago.Services
             return payload;
         }
 
-        // 식당 추가
-        public IActionResult AddRestaurant(string restaurantName)
-        {
-            if (string.IsNullOrEmpty(restaurantName))
-                return BadRequest();
-
-            TRestaurant newRestaurant = new()
-            {
-                RestaurantName = restaurantName
-            };
-
-            _context.Restaurant.Add(newRestaurant);
-            _context.SaveChanges();
-
-            return NoContent();
-        }
-
         // 룰렛 당첨결과 저장
         public IActionResult AddRouletteResult(string rouletteResult)
         {
             if (string.IsNullOrEmpty(rouletteResult))
                 return BadRequest();
 
-            // T_Statistics 테이블이 비었으면 1로 초기화
-            int statisticsId = 1;
-
-            // 비어있지 않으면 마지막 번호에서 1을 추가한 값으로 초기화
-            if (_context.Statistics.Any())
+            var getRow = _context.Statistics.AsNoTracking().OrderByDescending(i => i.StatisticsId).FirstOrDefault();
+            
+            if (getRow != null)
             {
-                var lastRow = _context.Statistics.AsNoTracking().OrderByDescending(c => c.StatisticsId).FirstOrDefault();
-                statisticsId = lastRow.StatisticsId;
-                statisticsId++;
+                getRow.RouletteResult = rouletteResult;
+                getRow.ModifiedDate = DateTime.Now;
+
+                _context.Statistics.Update(getRow);
+                _context.SaveChanges();
             }
 
-            // UserAccessInfo에서 email 가져오기
-            //===========================================================================================================================================================================================
-
-            //===========================================================================================================================================================================================
-
-            TStatistics statistics = new()
-            {
-                StatisticsId = statisticsId,
-                //Email = email,
-                RouletteResult = rouletteResult,
-                ModifiedDate = DateTime.Now
-            };
-
-            _context.Statistics.Add(statistics);
-            _context.SaveChanges();
-            
             return NoContent();
         }
 
         // 룰렛 리스트 최신화
-        public IActionResult AddRouletteList(List<RouletteList> jsonRouletteResultList) // List: { id, text, fillStyle, textFillStyle }
+        public IActionResult AddRouletteList(Roulettes jsonRouletteResultList) // List: { id, text, fillStyle, textFillStyle }
         {
-            if (jsonRouletteResultList == null)
+            if (jsonRouletteResultList.RouletteList == null)
                 return BadRequest();
 
-            int rouletteResultListCount = jsonRouletteResultList.Count;
+            int rouletteResultListCount = jsonRouletteResultList.RouletteList.Count;
 
             // rouletteResultList에서 text만 따로 뽑기
             string restaurantList = "";
-            foreach (var jsonRouletteResult in jsonRouletteResultList)
+            foreach (var jsonRouletteResult in jsonRouletteResultList.RouletteList)
             {
                 //string jsonString = System.Text.Json.JsonSerializer.Serialize(jsonRouletteResult); // { "id", "text", "fillStyle", "textFillStyle" }
                 //var jsonKey = JsonConvert.DeserializeObject<RouletteList>(jsonRouletteResult); // insert jsonString to Models.RouletteResultList.cs
-                restaurantList += (jsonRouletteResult.text + @"/split/");
+                restaurantList += (jsonRouletteResult.Text + @",");
             }
-            
+
+            // T_Statistics에 RouletteList 업데이트
+            var getRow = _context.Statistics.AsNoTracking().OrderByDescending(i => i.StatisticsId).FirstOrDefault();
+
+            if (getRow != null)
+            {
+                getRow.RouletteList = restaurantList;
+
+                _context.Statistics.Update(getRow);
+                _context.SaveChanges();
+            }
+
             // T_Restaurant 변경
             using (SqlConnection dbConnection = new(_config["SqlServerConnection"]))
             {
@@ -174,7 +159,7 @@ namespace Swilago.Services
                 using (SqlCommand command = dbConnection.CreateCommand())
                 {
                     command.CommandTimeout = 0;
-                    command.CommandText = "EXEC dbo.P_ChangeRestaurantTableToRouletteResultList @RouletteResultListCount, @RestaurantList";
+                    command.CommandText = "EXEC dbo.P_SetRouletteList @RouletteResultListCount, @RestaurantList";
 
                     // rouletteResultListCount 값을 프로시져로 전달 코드
                     SqlParameter paramRouletteResultListCount = new("@RouletteResultListCount", rouletteResultListCount);

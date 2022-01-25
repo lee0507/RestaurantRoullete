@@ -7,19 +7,16 @@ namespace Swilago.Interfaces
     public interface IRestaurantService
     {
         // 전체 조회
-        Payload GetRestaurantList();
+        IActionResult GetRestaurantList();
 
         // 하나만 조회
         Payload GetRestaurant(int restaurantId);
-
-        // 식당 추가
-        IActionResult AddRestaurant(string restaurantName);
 
         // 룰렛 당첨결과 저장
         IActionResult AddRouletteResult(string rouletteResult);
 
         // 룰렛 리스트 최신화
-        IActionResult AddRouletteList(List<RouletteList> jsonRouletteResultList);
+        IActionResult AddRouletteList(Roulettes jsonRouletteResultList);
 
         // 식당 삭제
         IActionResult DeleteRestaurnat(int restaurantId);

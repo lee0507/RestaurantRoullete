@@ -22,7 +22,7 @@ namespace Swilago.Controllers
         [Route("GetRestaurantList")]
         public IActionResult GetRestaurantList()
         {
-            return CheckErrors(_service.GetRestaurantList());
+            return _service.GetRestaurantList();
         }
 
         // 단일조회: /Restaurant/GetRestaurant?restaurantId=
@@ -31,14 +31,6 @@ namespace Swilago.Controllers
         public IActionResult GetRestaurant(int restaurantId)
         {
             return CheckErrors(_service.GetRestaurant(restaurantId));
-        }
-
-        // 추가: /Restaurant/PostRestaurant?restaurantName=
-        [HttpPost]
-        [Route("PostRestaurant")]
-        public IActionResult PostRestaurant(string restaurantName)
-        {
-            return _service.AddRestaurant(restaurantName);
         }
 
         // 룰렛 당첨결과 저장 : /Restaurant/PostRouletteResult?rouletteResult=
@@ -53,7 +45,7 @@ namespace Swilago.Controllers
         // ex) jsonRouletteResultList = { id, text, fillStyle, textFillStyle } is in Body
         [HttpPost]
         [Route("PostRouletteList")]
-        public IActionResult PostRouletteResult([FromBody] List<RouletteList> jsonRouletteResultList)
+        public IActionResult PostRouletteResult([FromBody] Roulettes jsonRouletteResultList)
         {
             return _service.AddRouletteList(jsonRouletteResultList);
         }

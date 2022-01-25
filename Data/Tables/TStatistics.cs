@@ -13,6 +13,8 @@ namespace Swilago.Data.Tables
 
         public string RouletteResult { get; set; }
 
+        public string RouletteList { get; set; }
+
         public DateTime ModifiedDate { get; set; }
     }
 }

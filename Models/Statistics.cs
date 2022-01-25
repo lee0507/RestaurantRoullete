@@ -4,7 +4,7 @@
     {
         public int StatisticsId { get; set; }
 
-        public string Email { get; set; }
+        public static string Email { get; set; }
 
         public string RouletteResult { get; set; }
 

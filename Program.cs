@@ -70,8 +70,8 @@ builder.Services.AddCors(options =>
                       .AllowAnyHeader());
 });
 
-builder.Services.AddTransient<IRestaurantService, RestaurantService>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IRestaurantService, RestaurantService>();
 
 // Add services to the container.
 
