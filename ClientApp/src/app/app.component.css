@@ -1,0 +1,16 @@
+.toolbar-spacer {
+    flex: 1 1 auto;
+  }
+
+a {
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.record {
+    padding-right: 15px;
+}
+
+
+div {
+  font-family: 'Noto Sans KR', sans-serif;
+}

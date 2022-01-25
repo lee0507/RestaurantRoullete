@@ -1,0 +1,176 @@
+<div *ngIf="isLoading" style="text-align: center">
+  <app-loading-spinner></app-loading-spinner>
+</div>
+
+<div *ngIf="!isLoading">
+  <div *ngIf="!isViewRoulette">
+    <h1>식당 리스트를 작성해주세요🧾</h1>
+  </div>
+
+  <div *ngIf="isViewRoulette">
+    <h1 *ngIf="!restaurantNameDisplay" class="dangchum">돌림판을 돌려주세요🎡</h1>
+    <h1 *ngIf="restaurantNameDisplay" class="dangchum">{{ restaurantName }}🎉 당첨되었습니다!</h1>
+  </div>
+
+  <div *ngIf="isViewRoulette && deviceInfo === 'mobile'">
+    <ngx-wheel class="wheel"
+               *ngIf="items.length > 0"
+               #wheel
+               width='350'
+               height='380'
+               spinDuration='8'
+               [disableSpinOnClick]='true'
+               [items]='items'
+               [innerRadius]='30'
+               [spinAmount]='7'
+               textOrientation='horizontal'
+               textAlignment="outer"
+               pointerStrokeColor='black'
+               pointerFillColor='purple'
+               [idToLandOn]='idToLandOn'
+               (onSpinStart)='before()'
+               (onSpinComplete)='after()'>
+    </ngx-wheel>
+  </div>
+
+  <div *ngIf="isViewRoulette && deviceInfo === 'desktop'">
+    <ngx-wheel class="wheel"
+               *ngIf="items.length > 0"
+               #wheel
+               width='800'
+               height='800'
+               spinDuration='8'
+               [disableSpinOnClick]='true'
+               [items]='items'
+               [innerRadius]='30'
+               [spinAmount]='7'
+               textOrientation='horizontal'
+               textAlignment="outer"
+               pointerStrokeColor='black'
+               pointerFillColor='purple'
+               [idToLandOn]='idToLandOn'
+               (onSpinStart)='before()'
+               (onSpinComplete)='after()'>
+    </ngx-wheel>
+  </div>
+
+  <div>
+    <button class="btn btn-dark"
+            id="buttonsBoxLeft"
+            (click)="myreset()"
+            *ngIf="!isViewRoulette"
+            [disabled]="items[0].id === 12000">
+
+      SETTING
+    </button>
+
+    <div *ngIf="isViewRoulette">
+      <button class="btn btn-dark"
+              id="FormLeft"
+              (click)="list()"
+              [disabled]="isViewList">
+        LIST
+      </button>
+      <button class="btn btn-dark"
+              id="buttonsBoxRight"
+              (click)="reset()"
+              *ngIf="isSpinning"
+              [disabled]="!isViewReset">
+        RESET
+      </button>
+      <button class="btn btn-dark"
+              id="buttonsBoxRight"
+              (click)="spin()"
+              *ngIf="!isSpinning">
+        SPIN
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="!isViewRoulette">
+    <form (ngSubmit)="addRestaurant(form)" #form="ngForm">
+      <button class="btn btn-dark"
+              id="FormRight"
+              type="submit"
+              [disabled]="!form.valid"
+              *ngIf="!isViewRoulette">
+        식당 추가
+      </button>
+      <input type="text"
+             id="id"
+             class="form-control"
+             name="text"
+             size="1"
+             ngModel
+             required
+             maxlength="6"
+             placeholder="식당을 입력해주세요"
+             [disabled]="isSpinned">
+    </form>
+  </div>
+
+  <form (ngSubmit)="addRestaurant(form)" #form="ngForm">
+    <div class="container" *ngIf="!isViewRoulette">
+      <div class="row">
+        <div class="col">
+          <label class="checkbox">
+            <input type="checkbox" value="담미온" id="10001" onclick="addMenuSetting()"> 담미온
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" value="option2" id="inlineCheckbox2"> 중국집
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" value="option3" id="inlineCheckbox3"> Discover
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" value="option3" id="inlineCheckbox3"> Financing
+          </label>
+        </div>
+        <div class="col">
+          <label class="checkbox">
+            <input type="checkbox" value="option1" id="inlineCheckbox1"> Check
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" value="option2" id="inlineCheckbox2"> American Express
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" value="option3" id="inlineCheckbox3"> MasterCard
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" value="option3" id="inlineCheckbox3"> Google Checkout
+          </label>
+        </div>
+        <div class="col">
+          <label class="checkbox">
+            <input type="checkbox" value="option1" id="inlineCheckbox1"> Traveler's Check
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" value="option2" id="inlineCheckbox2"> Diner's Club
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" value="option3" id="inlineCheckbox3"> Visa
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" value="option3" id="inlineCheckbox3"> Paypal
+          </label>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div *ngIf="!isViewRoulette">
+    <div class="list-group" *ngFor="let item of items">
+      <button class="list-group-item" (click)="deleteRestaurant(item.id)" [disabled]="items[0].id === 12000">
+        {{ item.text }}
+        <span class="badge badge-primary badge-pill">X</span>
+      </button>
+    </div>
+  </div>
+  <hr />
+</div>
+
+
+
+
+
+

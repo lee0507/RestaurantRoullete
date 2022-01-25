@@ -1,0 +1,16 @@
+<!--로그인 하지 않았을 때 보일 화면-->
+<div *ngIf="!loginDisplay" class="wrapper1">
+  <div>로그인해주세요!</div>
+</div>
+<!--<div *ngIf="!loginDisplay" class="wrapper2">
+  <button class="btn btn-primary">로그인</button>
+</div>-->
+
+<!--로그인시 보일 화면-->
+<div *ngIf="loginDisplay">
+  <app-wheel></app-wheel>
+  <!--<app-mobile *ngIf="deviceInfo === 'mobile'"></app-mobile>-->
+  <!--<app-test></app-test>-->
+</div>
+
+

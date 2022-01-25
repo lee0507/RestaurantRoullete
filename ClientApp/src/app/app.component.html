@@ -1,0 +1,17 @@
+<mat-toolbar color="primary">
+  <div class="title" style="cursor: pointer" [routerLink]="['']">{{ title }}</div>
+
+  <div class="toolbar-spacer"></div>
+
+  <!--클릭하면 레코드로 이동-->
+  <button mat-stroked-button *ngIf="loginDisplay" [routerLink]="['record']">Record</button>
+
+  <button mat-stroked-button *ngIf="!loginDisplay" (click)="loginRedirect()">Login</button>
+
+  <button mat-stroked-button *ngIf="loginDisplay" (click)="logout()">Logout</button>
+
+</mat-toolbar>
+<div class="container">
+  <!--This is to avoid reload during acquireTokenSilent() because of hidden iframe -->
+  <router-outlet *ngIf="!isIframe"></router-outlet>
+</div>
