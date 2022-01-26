@@ -24,8 +24,6 @@ import { DeviceCheckService } from './home/device-check.service';
 import { WheelComponent } from './home/wheel/wheel.component';
 import { TestComponent } from './home/test/test.component';
 import { AuthInterceptorService } from './auth-interceptor.service';
-import { NavbarComponent } from './navbar/navbar.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const isIE = window.navigator.userAgent.indexOf("MSIE ") > -1 || window.navigator.userAgent.indexOf("Trident/") > -1; // Remove this line to use Angular Universal
 
@@ -82,8 +80,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     FailedComponent,
     WheelComponent,
     LoadingSpinnerComponent,
-    TestComponent,
-    NavbarComponent
+    TestComponent
   ],
   imports: [
     BrowserModule,
@@ -96,8 +93,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     MatMenuModule,
     HttpClientModule,
     MsalModule,
-    NgxWheelModule,
-    NgbModule
+    NgxWheelModule
   ],
   providers: [
     {

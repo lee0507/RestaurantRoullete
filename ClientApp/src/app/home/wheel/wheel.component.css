@@ -87,13 +87,3 @@ label, input, button, select, textarea {
     font-weight: normal;
     line-height: 20px;
 }
-
-  input[type="checkbox" i] {
-    background-color: initial;
-    cursor: default;
-    appearance: auto;
-    box-sizing: border-box;
-    margin: 3px 5px 3px 4px;
-    padding: initial;
-    border: initial;
-  }

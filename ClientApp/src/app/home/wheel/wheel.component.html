@@ -59,7 +59,7 @@
             id="buttonsBoxLeft"
             (click)="myreset()"
             *ngIf="!isViewRoulette"
-            [disabled]="this.items.length === 0">
+            [disabled]="items[0].id === 12000">
 
       SETTING
     </button>
@@ -109,40 +109,64 @@
     </form>
   </div>
 
-  <div class="container" *ngIf="!isViewRoulette">
-    <div class="text-center mt-5">
+  <form (ngSubmit)="addRestaurant(form)" #form="ngForm">
+    <div class="container" *ngIf="!isViewRoulette">
       <div class="row">
-        <!--<div class="col-md-6">-->
-          <ul class="list-group">
-            <li class="list-group-item">
-              <input type="checkbox" [(ngModel)]="masterSelected" name="list_name" value="m1"
-                     (change)="checkUncheckAll()" /> <strong>Select / Unselect All</strong>
-            </li>
-          </ul>
-          <ul class="list-group">
-            <li class="list-group-item" *ngFor="let item of checklist">
-              <input type="checkbox" [(ngModel)]="item.isSelected" name="list_name" value="{{item.id}}"
-                     (change)="isAllSelected()" />
-              {{item.text}}
-              <!--<button (click)="deleteRestaurant(item.id)" >X</button>-->
-            </li>
-          </ul>
+        <div class="col">
+          <label class="checkbox">
+            <input type="checkbox" value="담미온" id="10001" onclick="addMenuSetting()"> 담미온
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" value="option2" id="inlineCheckbox2"> 중국집
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" value="option3" id="inlineCheckbox3"> Discover
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" value="option3" id="inlineCheckbox3"> Financing
+          </label>
         </div>
-        <!--<div class="col-md-6">
-          <code>{{checkedList}}</code>
+        <div class="col">
+          <label class="checkbox">
+            <input type="checkbox" value="option1" id="inlineCheckbox1"> Check
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" value="option2" id="inlineCheckbox2"> American Express
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" value="option3" id="inlineCheckbox3"> MasterCard
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" value="option3" id="inlineCheckbox3"> Google Checkout
+          </label>
         </div>
-      </div>-->
+        <div class="col">
+          <label class="checkbox">
+            <input type="checkbox" value="option1" id="inlineCheckbox1"> Traveler's Check
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" value="option2" id="inlineCheckbox2"> Diner's Club
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" value="option3" id="inlineCheckbox3"> Visa
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" value="option3" id="inlineCheckbox3"> Paypal
+          </label>
+        </div>
+      </div>
     </div>
-  </div>
+  </form>
 
-  <!--<div *ngIf="!isViewRoulette">
+  <div *ngIf="!isViewRoulette">
     <div class="list-group" *ngFor="let item of items">
       <button class="list-group-item" (click)="deleteRestaurant(item.id)" [disabled]="items[0].id === 12000">
         {{ item.text }}
+        <span class="badge badge-primary badge-pill">X</span>
       </button>
     </div>
   </div>
-  <hr />-->
+  <hr />
 </div>
 
 
