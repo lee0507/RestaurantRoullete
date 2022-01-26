@@ -2,7 +2,6 @@ import { AfterViewInit, ElementRef, OnDestroy } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { HomeService } from '../home.service';
 import { NgxWheelComponent } from 'ngx-wheel';
 import { Subscription } from 'rxjs';
 import { DataStorageService } from '../../shared/data-storage.service';
@@ -15,11 +14,11 @@ declare let Winwheel: any;
   templateUrl: './wheel.component.html',
   styleUrls: ['./wheel.component.css']
 })
-export class WheelComponent implements OnInit, OnDestroy{
+export class WheelComponent implements OnInit, OnDestroy {
   @ViewChild(NgxWheelComponent, { static: false }) wheel: any;
   @ViewChild('f') slForm: NgForm;
 
-  items: [{id: number, text: string}] | any = [{ id: 12000, text: '데이터를 입력해주세요' }];
+  items: [{ id: number, text: string }] | any = [{ id: 12000, text: '' }];
   restaurantNameDisplay = false;
   deviceInfo = null;
   restaurantName = "";
@@ -28,50 +27,73 @@ export class WheelComponent implements OnInit, OnDestroy{
   isSpinning = false;
   isViewReset = false;
   isViewList = false;
+  masterSelected: boolean;
+  checklist: any;
+  checkedList: any;
 
   subscription: Subscription;
   idToLandOn = this.items[Math.floor(Math.random() * this.items.length)].id;
 
   constructor(
-    private homeService: HomeService,
     private dataStorageService: DataStorageService,
     private deviceCheckService: DeviceCheckService) {
     this.deviceInfo = deviceCheckService.epicFunction();
     console.log('dddd', this.deviceInfo)
     console.log('dddd', this.items[0].id)
 
+    this.masterSelected = false;
+    this.checklist = [
+      { id: 1, text: '이동현1', isSelected: false },
+      { id: 2, text: '이동현2', isSelected: true },
+      { id: 3, text: '이동현3', isSelected: true },
+      { id: 4, text: '이동현4', isSelected: true },
+      { id: 5, text: '이동현5', isSelected: false },
+      { id: 6, text: '이동현6', isSelected: false },
+      { id: 7, text: '이동현7', isSelected: false },
+      { id: 8, text: '이동현8', isSelected: false }
+    ];
+    this.getCheckedItemList();
+
   }
 
   ngOnInit(): void {
-    this.setting();
     console.log('init')
-
-    this.subscription = this.homeService.itemsChanged
-      .subscribe((items) => {
-        this.items = items;
-        console.log(this.items, 'subscription items')
-      }, error => {
-        console.log(error)
-      })
   }
 
-  //맨 처음 한번 데이터 연동
-  setting() {
-    this.isLoading = true;
-    this.dataStorageService.fetchRestaurant().subscribe(value => {
-      this.items = value;
-      this.isLoading = false;
-      console.log(this.items, 'init items');
-    }, error => {
-      console.log(error);
-      this.isLoading = false;
+  checkUncheckAll() {
+    for (var i = 0; i < this.checklist.length; i++) {
+      this.checklist[i].isSelected = this.masterSelected;
+    }
+    this.getCheckedItemList();
+  }
+
+
+  isAllSelected() {
+    this.masterSelected = this.checklist.every(function (item: any) {
+      return item.isSelected == true;
     })
+    this.getCheckedItemList();
+  }
+
+  getCheckedItemList() {
+    this.checkedList = [];
+    for (var i = 0; i < this.checklist.length; i++) {
+      if (this.checklist[i].isSelected)
+        this.checkedList.push(this.checklist[i]);
+    }
+
+    this.items = this.checkedList.map(x => {
+      return { ...x, fillStyle: "#" + Math.floor(Math.random() * 16777215).toString(16), textFillStyle: 'white' }
+    });
+
+    console.log(this.items, 'this.items');
+    console.log(this.checkedList, 'this.checkedList');
+
   }
 
   //돌리면 바로 호출
   before() {
-    console.log(this.homeService.getRestaurants(), 'before homeservice');
-    console.log(this.items,'before items')
+    console.log(this.items, 'before items')
   }
 
   //돌리는게 멈추면 호출
@@ -119,10 +141,6 @@ export class WheelComponent implements OnInit, OnDestroy{
     this.isViewRoulette = false;
   }
 
-  alertlist() {
-
-  }
-
   //색상 삭제하는 함수(해야할 일)
   DeleteRandomColor() {
 
@@ -130,7 +148,6 @@ export class WheelComponent implements OnInit, OnDestroy{
 
   deleteRestaurant(itemId) {
     if (Object.keys(this.items).length > 1) {
-      this.homeService.deleteRestaurant(itemId);
     } else {
       alert('식당이 하나 이상 있어야합니다.')
     }
@@ -141,12 +158,14 @@ export class WheelComponent implements OnInit, OnDestroy{
   //비동기로 데이터를 세팅하고 길이로 보내면 프론트에서 id 붙여서 보낼 수도 있을듯
   addRestaurant(form: NgForm) {
     const NewForm = {
-      id: this.items[this.items.length - 1].id + 1,
+      id: this.checklist[this.checklist.length - 1].id + 1,
       text: form.value.text,
-      fillStyle: "#" + Math.floor(Math.random() * 16777215).toString(16),
-      textFillStyle: 'white'
+      isSelected: true
     };
-    this.homeService.addRestaurant(NewForm);
+    this.checklist.push(NewForm)
+    this.checkedList.push(NewForm)
+    this.getCheckedItemList();
+
     form.reset();
   }
 
@@ -155,6 +174,6 @@ export class WheelComponent implements OnInit, OnDestroy{
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    //this.subscription.unsubscribe();
   }
 }

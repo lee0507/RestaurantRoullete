@@ -22,18 +22,14 @@ export class DataStorageService {
           const postArray = responseData["RestaurantList"];
           console.log(responseData["RestaurantList"], 'rlsasdfsadf')
 
-          for (let i = 0; i < postArray.length; i++) {
-            console.log(postArray[i]);
-            postArray[i]["fillStyle"] = "#" + Math.floor(Math.random() * 16777215).toString(16)
-            postArray[i]["textFillStyle"] = 'white'
-          }
+          //for (let i = 0; i < postArray.length; i++) {
+          //  console.log(postArray[i]);
+          //  postArray[i]["fillStyle"] = "#" + Math.floor(Math.random() * 16777215).toString(16)
+          //  postArray[i]["textFillStyle"] = 'white'
+          //}
 
           console.log(postArray, 'postArray')
           return postArray;
-        }),
-        tap(postArray => {
-          this.homeService.setRestaurant(postArray);
-          console.log(postArray, 'dataService Fetch')
         })
       )
   }

@@ -11,6 +11,8 @@ import { filter, takeUntil } from 'rxjs/operators';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, OnDestroy {
+  public isMenuCollapsed = true;
+
   title = '돌려돌려 돌림판';
   isIframe = false;
   loginDisplay = false;
@@ -65,6 +67,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   loginRedirect() {
+    this.isMenuCollapsed = true;
     if (this.msalGuardConfig.authRequest){
       this.authService.loginRedirect({...this.msalGuardConfig.authRequest} as RedirectRequest);
     } else {
@@ -87,6 +90,7 @@ export class AppComponent implements OnInit, OnDestroy {
   //}
 
   logout(popup?: boolean) {
+    this.isMenuCollapsed = true;
     this.authService.logoutRedirect();
     setTimeout(() => {
       this.router.navigate(['/'])
